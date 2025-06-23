@@ -37,7 +37,7 @@ namespace TransportManagementSystem
         }
 
         // Метод для остановки
-        public void Stop()
+        public virtual void Stop()
         {
             Console.WriteLine($"{Brand} {Model} остановился.");
         }

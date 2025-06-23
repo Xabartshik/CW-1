@@ -30,6 +30,17 @@ internal class Program
 
         tesla.Start();
         Console.WriteLine(tesla.GetInfo());
+
+        var bike = new Motorcycle
+        {
+            Brand = "Yamaha",
+            Model = "R1",
+            Year = 2023,
+            MaxSpeed = 300
+        };
+        bike.Start();
+        bike.Stop();
+        bike.GetInfo();
     }
 
 
