@@ -8,27 +8,32 @@ namespace TransportManagementSystem
 {
     public class Vehicle
     {
-        public string brand;
-        public string model;
+        private string _brand;
+        public string Brand
+        {
+            get { return _brand.ToUpper(); }
+            set { _brand = value.Trim(); }
+        }
+        public string Model { get; set; }
         public int year;
         public double maxSpeed;
 
         // Метод для запуска двигателя
         public void Start()
         {
-            Console.WriteLine($"{brand} {model} завёл двигатель!");
+            Console.WriteLine($"{Brand} {Model} завёл двигатель!");
         }
 
         // Метод для остановки
         public void Stop()
         {
-            Console.WriteLine($"{brand} {model} остановился.");
+            Console.WriteLine($"{Brand} {Model} остановился.");
         }
 
         // Метод для получения информации
         public string GetInfo()
         {
-            return $"{brand} {model} ({year} год)";
+            return $"{Brand} {Model} ({year} год)";
         }
 
     }

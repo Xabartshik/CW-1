@@ -5,14 +5,14 @@ internal class Program
     static void Main(string[] args)
     {
         Vehicle car = new Vehicle();
-        car.brand = "Toyota";
-        car.model = "Camry";
+        car.Brand = "Toyota";
+        car.Model = "Camry";
         car.year = 2023;
         car.maxSpeed = 220;
 
         Vehicle truck = new Vehicle();
-        truck.brand = "Volvo";
-        truck.model = "FH16";
+        truck.Brand = "Volvo";
+        truck.Model = "FH16";
         truck.year = 2022;
         truck.maxSpeed = 120;
 
