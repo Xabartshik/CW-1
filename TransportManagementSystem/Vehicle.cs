@@ -54,7 +54,7 @@ namespace TransportManagementSystem
             {
                 Console.WriteLine($"{Brand} {Model} может достичь скорости {MaxSpeed}.");
             }
-            else { Console.WriteLine($"{Brand} {Model} не может достичь скорости {MaxSpeed}."); }ЯЯ
+            else { Console.WriteLine($"{Brand} {Model} не может достичь скорости {MaxSpeed}."); };
             }
     }
 
