@@ -48,6 +48,14 @@ namespace TransportManagementSystem
             return $"{Brand} {Model} ({Year} год)";
         }
 
+        public void CanReachSpeed(double speed)
+        {
+            if (speed <= MaxSpeed)
+            {
+                Console.WriteLine($"{Brand} {Model} может достичь скорости {MaxSpeed}.");
+            }
+            else { Console.WriteLine($"{Brand} {Model} не может достичь скорости {MaxSpeed}."); }ЯЯ
+            }
     }
 
 
