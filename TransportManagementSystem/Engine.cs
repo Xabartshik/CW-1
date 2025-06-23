@@ -11,5 +11,7 @@ namespace TransportManagementSystem
     {
         public string Model { get; set; }
         public string Brand { get; set; }
+        public int HorsePower { get; set; }
+
     }
 }

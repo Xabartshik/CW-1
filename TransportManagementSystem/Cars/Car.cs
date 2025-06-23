@@ -12,7 +12,8 @@ namespace TransportManagementSystem.Cars
         public Car(string brand, string model) : base(brand, model)
         {
         }
-
+        public Engine? Engine { get; set; }
+        public DateTime? LastServiceDate { get; set; }
         public int Doors { get; set; }
 
         public void Move()

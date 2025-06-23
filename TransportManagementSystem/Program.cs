@@ -8,25 +8,32 @@ internal class Program
 
     static void Main(string[] args)
     {
+        var garage = new Garage();
 
-        // Создаём словарь, где ключ — госномер, а значение — объект Car
-        var carDictionary = new Dictionary<string, Car>
+        garage.AddCar("A123BC", new Car("Toyota", "Corolla")
         {
-            { "A123BC", new Car("Toyota", "Corolla") { Doors = 4 } },
-            { "B456DE", new Car("BMW", "M3") { Doors = 2 } },
-            { "C789FG", new Car("Mazda", "rx-7") { Doors = 2 } }
-        };
+            Engine = new Engine { Model = "1NZ-FE", HorsePower = 110 },
+            LastServiceDate = DateTime.Now.AddMonths(-8)
+        });
 
-        // Получаем машину по ключу (госномеру)
-        var car = carDictionary["B456DE"];
-        Console.WriteLine($"Brand: {car.Brand}, Model: {car.Model}"); // BMW M3
-
-        // Можно пройтись по всем парам ключ-значение
-        foreach (var pair in carDictionary)
+        garage.AddCar("B456DE", new Car("BMW", "M3")
         {
-            Console.WriteLine($"Number: {pair.Key}, Brand: {pair.Value.Brand}, Model: {pair.Value.Model}");
+            Engine = new Engine { Model = "S55", HorsePower = 425 }
+        });
+
+        // Поиск существующей машины
+        var foundCar = garage.FindCar("A123BC");
+        garage.PrintCarInfo(foundCar, "A123BC");
+
+        // Поиск несуществующей машины
+        var notFoundCar = garage.FindCar("Z999ZZ");
+        garage.PrintCarInfo(notFoundCar, "Z999ZZ");
+
+        // Проверка необходимости ТО
+        if (foundCar != null)
+        {
+            Console.WriteLine($"Needs service: {garage.NeedsService(foundCar)}");
         }
     }
-
 
 }
