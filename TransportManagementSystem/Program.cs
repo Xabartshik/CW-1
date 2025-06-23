@@ -40,6 +40,22 @@ internal class Program
 
         dog.Move();
 
+        var time = new Time(0, 0, 0, 0);
+
+        time.Move();
+        time.Move();
+        time.Move();
+        time.Move();
+        time.Move();
+        time.Move();
+        time.Move();
+        time.Move();
+        time.Move();
+        time.Move();
+        time.Move();
+        time.Move();
+        time.Move();
+        time.Move();
     }
 
 
