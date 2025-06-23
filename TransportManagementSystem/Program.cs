@@ -13,12 +13,14 @@ internal class Program
         garage.AddCar("A123BC", new Car("Toyota", "Corolla")
         {
             Engine = new Engine { Model = "1NZ-FE", HorsePower = 110 },
-            LastServiceDate = DateTime.Now.AddMonths(-8)
+            LastServiceDate = DateTime.Now.AddMonths(-8),
+            InsuranceExpiryDate = DateTime.Now.AddMonths(8),
         });
 
         garage.AddCar("B456DE", new Car("BMW", "M3")
         {
-            Engine = new Engine { Model = "S55", HorsePower = 425 }
+            Engine = new Engine { Model = "S55", HorsePower = 425 },
+            InsuranceExpiryDate = null
         });
 
         // Поиск существующей машины
@@ -34,6 +36,7 @@ internal class Program
         {
             Console.WriteLine($"Needs service: {garage.NeedsService(foundCar)}");
         }
+        
     }
 
 }
