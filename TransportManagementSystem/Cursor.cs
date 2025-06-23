@@ -10,9 +10,12 @@ namespace TransportManagementSystem
     //Класс курсора, передвигаемого по экрану
     internal class Cursor : IMovable
     {
+        public object X { get; set; }
+        public object Y { get; set; }
+
         public void Move()
         {
-            Console.WriteLine($"Курсор двигается по экрану");
+            Console.WriteLine($"Курсор переместился на позицию X:{X}, Y:{Y}");
         }
     }
 }
