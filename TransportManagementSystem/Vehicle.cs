@@ -12,6 +12,7 @@ namespace TransportManagementSystem
         public string model;
         public int year;
         public double maxSpeed;
+        public double fuelLevel;
 
         // Метод для запуска двигателя
         public void Start()
@@ -29,6 +30,12 @@ namespace TransportManagementSystem
         public string GetInfo()
         {
             return $"{brand} {model} ({year} год)";
+        }
+        //Метод для заправки автомобиля
+        public void Refuel(double liters)
+        {
+            this.fuelLevel += liters;
+            Console.WriteLine($"{brand} {model} заправлен на {liters} литров. Текущий уровень топлива: {this.fuelLevel} л.");
         }
 
     }
