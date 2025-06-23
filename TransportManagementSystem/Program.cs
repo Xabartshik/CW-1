@@ -14,28 +14,23 @@ internal class Program
             Doors = 4
         };
 
-        myCar.Start();          
-        myCar.OpenTrunk();      
-        Console.WriteLine(myCar.GetInfo());
-        ServiceVehicle(myCar);
-
-        var tesla = new ElectricCar("Tesla", "Y3")
+        var sportcar = new SportCar("Toyota", "Камри 3.5")
         {
-            Year = 2022,
-            MaxSpeed = 200
+            SpoilerType = "Крыло"
         };
+        // Program.cs
+        var carServiceBox = new ServiceBox<Car>("Бокс ремонта авто");
+        carServiceBox.ShofInfo();
+        carServiceBox.Repair(myCar);
+        carServiceBox.ShofInfo();
 
-        tesla.Start();
-        Console.WriteLine(tesla.GetInfo());
+        Console.WriteLine();
 
-        myCar.Move();
-        var dog = new Dog
-        {
-            Breed = "Jack-Russel",
-            Name = "Lessie"
-        };
+        var engineServiceBox = new ServiceBox<Engine>("Бокс ремонта двигателей");
+        engineServiceBox.ShofInfo();
+        engineServiceBox.Repair(new Engine { Brand = "Subaru", Model = "EJ257" }); // создаем двигатель, заполняем его через инициализатор и сразу передаем в бокс
+        engineServiceBox.ShofInfo();
 
-        dog.Move();
 
     }
 

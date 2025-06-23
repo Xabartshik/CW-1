@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TransportManagementSystem
 {
-    public class Car : Vehicle, IMovable
+    public class Car : Vehicle, IMovable, IRepairable
     {
         public Car(string brand, string model) : base(brand, model)
         {
