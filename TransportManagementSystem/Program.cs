@@ -7,35 +7,10 @@ internal class Program
 
     static void Main(string[] args)
     {
-        var myCar = new Car("Toyota", "Corolla")
+        var sportcar = new SportCar("Toyota", "Камри 3.5")
         {
-            Year = 2022,
-            MaxSpeed = 195,
-            Doors = 4
+            SpoilerType = "Крыло"
         };
-
-        myCar.Start();          
-        myCar.OpenTrunk();      
-        Console.WriteLine(myCar.GetInfo());
-        ServiceVehicle(myCar);
-
-        var tesla = new ElectricCar("Tesla", "Y3")
-        {
-            Year = 2022,
-            MaxSpeed = 200
-        };
-
-        tesla.Start();
-        Console.WriteLine(tesla.GetInfo());
-
-        myCar.Move();
-        var dog = new Dog
-        {
-            Breed = "Jack-Russel",
-            Name = "Lessie"
-        };
-
-        dog.Move();
 
     }
 
