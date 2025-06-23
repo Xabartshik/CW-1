@@ -7,14 +7,14 @@ internal class Program
         Vehicle car = new Vehicle();
         car.Brand = "Toyota";
         car.Model = "Camry";
-        car.year = 2023;
-        car.maxSpeed = 220;
+        car.Year = 2023;
+        car.MaxSpeed = 220;
 
         Vehicle truck = new Vehicle();
         truck.Brand = "Volvo";
         truck.Model = "FH16";
-        truck.year = 2022;
-        truck.maxSpeed = 120;
+        truck.Year = 2022;
+        truck.MaxSpeed = 120;
 
         Console.WriteLine(car.GetInfo());
         car.Start();

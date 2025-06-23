@@ -15,8 +15,8 @@ namespace TransportManagementSystem
             set { _brand = value.Trim(); }
         }
         public string Model { get; set; }
-        public int year;
-        public double maxSpeed;
+        public int Year { get; set; }
+        public double MaxSpeed;
 
         // Метод для запуска двигателя
         public void Start()
@@ -33,7 +33,7 @@ namespace TransportManagementSystem
         // Метод для получения информации
         public string GetInfo()
         {
-            return $"{Brand} {Model} ({year} год)";
+            return $"{Brand} {Model} ({Year} год)";
         }
 
     }
