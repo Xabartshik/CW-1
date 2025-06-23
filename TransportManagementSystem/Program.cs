@@ -9,6 +9,7 @@ internal class Program
         car.Model = "Camry";
         car.Year = 2023;
         car.MaxSpeed = 220;
+        car.CanReachSpeed(200);
 
         Vehicle truck = new Vehicle();
         truck.Brand = "Volvo";
@@ -20,9 +21,10 @@ internal class Program
         car.Start();
         car.Stop();
 
-        Console.WriteLine(truck.GetInfo());
+        Console.WriteLine("\n" + truck.GetInfo());
         truck.Start();
         truck.Stop();
+        truck.CanReachSpeed(200);
 
         Console.ReadLine();
 
