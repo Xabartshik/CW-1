@@ -31,6 +31,12 @@ internal class Program
         engineServiceBox.Repair(new Engine { Brand = "Subaru", Model = "EJ257" }); // создаем двигатель, заполняем его через инициализатор и сразу передаем в бокс
         engineServiceBox.ShofInfo();
 
+        Console.WriteLine();
+
+        var bycicleServiceBox = new ServiceBox<Bicycle>("Зона ремонта велосипедов");
+        bycicleServiceBox.ShofInfo();
+        bycicleServiceBox.Repair(new Bicycle { Brand = "Aspect", Model = "Radium P" }); 
+        bycicleServiceBox.ShofInfo();
 
     }
 
