@@ -1,4 +1,4 @@
-﻿namespace TransportManagementSystem
+﻿namespace TransportManagementSystem.Contracts
 {
     public interface IRepairable
     {

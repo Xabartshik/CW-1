@@ -1,4 +1,4 @@
-﻿using TransportManagementSystem;
+﻿using TransportManagementSystem.Contracts;
 
 public class Dog : IMovable
 {
