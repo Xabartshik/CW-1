@@ -16,7 +16,19 @@ namespace TransportManagementSystem
         }
         public string Model { get; set; }
         public int Year { get; set; }
-        public double MaxSpeed;
+        private double _maxSpeed;
+        public double MaxSpeed
+        {
+            get {
+                Console.WriteLine($"Максимальная скорость: {_maxSpeed} км/ч"); 
+                return _maxSpeed; }
+            set { if (value < 0) {
+                    throw new ArgumentOutOfRangeException("Значение скорости не может быть меньше 0");
+                }
+                _maxSpeed = value;
+            }
+
+        }
 
         // Метод для запуска двигателя
         public void Start()
