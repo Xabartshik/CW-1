@@ -1,4 +1,5 @@
-﻿using TransportManagementSystem;
+﻿using System.Reflection;
+using TransportManagementSystem;
 
 internal class Program
 {
@@ -6,10 +7,8 @@ internal class Program
 
     static void Main(string[] args)
     {
-        var myCar = new Car
+        var myCar = new Car("Toyota", "Corolla")
         {
-            Brand = "Toyota",
-            Model = "Corolla",
             Year = 2022,
             MaxSpeed = 195,
             Doors = 4
@@ -20,10 +19,8 @@ internal class Program
         Console.WriteLine(myCar.GetInfo());
         ServiceVehicle(myCar);
 
-        var tesla = new ElectricCar
+        var tesla = new ElectricCar("Tesla", "Y3")
         {
-            Brand = "Tesla",
-            Model = "Y3",
             Year = 2022,
             MaxSpeed = 200
         };
@@ -40,22 +37,6 @@ internal class Program
 
         dog.Move();
 
-        var time = new Time(0, 0, 0, 0);
-
-        time.Move();
-        time.Move();
-        time.Move();
-        time.Move();
-        time.Move();
-        time.Move();
-        time.Move();
-        time.Move();
-        time.Move();
-        time.Move();
-        time.Move();
-        time.Move();
-        time.Move();
-        time.Move();
     }
 
 

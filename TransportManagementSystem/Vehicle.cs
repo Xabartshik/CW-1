@@ -8,6 +8,13 @@ namespace TransportManagementSystem
 {
     public class Vehicle
     {
+        public Vehicle(string brand, string model)
+        {
+            Brand = brand;
+            Model = model;
+        }
+
+
         private string _brand;
         public string Brand
         {
@@ -19,10 +26,15 @@ namespace TransportManagementSystem
         private double _maxSpeed;
         public double MaxSpeed
         {
-            get {
-                Console.WriteLine($"Максимальная скорость: {_maxSpeed} км/ч"); 
-                return _maxSpeed; }
-            set { if (value < 0) {
+            get
+            {
+                Console.WriteLine($"Максимальная скорость: {_maxSpeed} км/ч");
+                return _maxSpeed;
+            }
+            set
+            {
+                if (value < 0)
+                {
                     throw new ArgumentOutOfRangeException("Значение скорости не может быть меньше 0");
                 }
                 _maxSpeed = value;
@@ -31,7 +43,7 @@ namespace TransportManagementSystem
         }
 
         // Метод для запуска двигателя
-        public  virtual void Start()
+        public virtual void Start()
         {
             Console.WriteLine($"{Brand} {Model} завёл двигатель!");
         }
@@ -54,10 +66,11 @@ namespace TransportManagementSystem
             {
                 Console.WriteLine($"{Brand} {Model} может достичь скорости {MaxSpeed}.");
             }
-            else { Console.WriteLine($"{Brand} {Model} не может достичь скорости {MaxSpeed}."); };
-            }
+            else { Console.WriteLine($"{Brand} {Model} не может достичь скорости {MaxSpeed}."); }
+            ;
         }
+    }
 
-        
+
 
 }

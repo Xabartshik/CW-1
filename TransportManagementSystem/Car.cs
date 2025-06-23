@@ -8,6 +8,10 @@ namespace TransportManagementSystem
 {
     public class Car : Vehicle, IMovable
     {
+        public Car(string brand, string model) : base(brand, model)
+        {
+        }
+
         public int Doors { get; set; }
 
         public void Move()

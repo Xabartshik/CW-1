@@ -3,6 +3,9 @@ using TransportManagementSystem;
 
 public class ElectricCar : Vehicle
 {
+    public ElectricCar(string brand, string model) : base(brand, model)
+    {
+    }
 
     public override void Start()
     {
