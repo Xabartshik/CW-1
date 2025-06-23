@@ -4,35 +4,28 @@ using TransportManagementSystem.Cars;
 
 internal class Program
 {
-    static void ServiceVehicle(Vehicle v) => Console.WriteLine($"Обслуживаем {v.GetInfo()}");
+
 
     static void Main(string[] args)
     {
-        var myCar = new Car("Toyota", "Corolla")
+
+        // Создаём словарь, где ключ — госномер, а значение — объект Car
+        var carDictionary = new Dictionary<string, Car>
         {
-            Year = 2022,
-            MaxSpeed = 195,
-            Doors = 4
+            { "A123BC", new Car("Toyota", "Corolla") { Doors = 4 } },
+            { "B456DE", new Car("BMW", "M3") { Doors = 2 } },
+            { "C789FG", new Car("Mazda", "rx-7") { Doors = 2 } }
         };
 
-        var sportcar = new SportCar("Toyota", "Камри 3.5")
+        // Получаем машину по ключу (госномеру)
+        var car = carDictionary["B456DE"];
+        Console.WriteLine($"Brand: {car.Brand}, Model: {car.Model}"); // BMW M3
+
+        // Можно пройтись по всем парам ключ-значение
+        foreach (var pair in carDictionary)
         {
-            SpoilerType = "Крыло"
-        };
-        // Program.cs
-        var carServiceBox = new ServiceBox<Car>("Бокс ремонта авто");
-        carServiceBox.ShofInfo();
-        carServiceBox.Repair(myCar);
-        carServiceBox.ShofInfo();
-
-        Console.WriteLine();
-
-        var engineServiceBox = new ServiceBox<Engine>("Бокс ремонта двигателей");
-        engineServiceBox.ShofInfo();
-        engineServiceBox.Repair(new Engine { Brand = "Subaru", Model = "EJ257" }); // создаем двигатель, заполняем его через инициализатор и сразу передаем в бокс
-        engineServiceBox.ShofInfo();
-
-
+            Console.WriteLine($"Number: {pair.Key}, Brand: {pair.Value.Brand}, Model: {pair.Value.Model}");
+        }
     }
 
 
