@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TransportManagementSystem.Contracts;
 
-namespace TransportManagementSystem.Cars
+namespace TransportManagementSystem.Transport
 {
     public class Car : Vehicle, IMovable, IRepairable
     {

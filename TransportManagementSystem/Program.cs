@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using TransportManagementSystem;
-using TransportManagementSystem.Cars;
+using TransportManagementSystem.Transport;
 
 internal class Program
 {
