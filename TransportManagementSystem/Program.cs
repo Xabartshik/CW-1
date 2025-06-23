@@ -40,7 +40,7 @@ internal class Program
         };
         bike.Start();
         bike.Stop();
-        bike.GetInfo();
+        Console.WriteLine(bike.GetInfo());
     }
 
 
