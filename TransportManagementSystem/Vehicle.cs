@@ -31,7 +31,7 @@ namespace TransportManagementSystem
         }
 
         // Метод для запуска двигателя
-        public void Start()
+        public  virtual void Start()
         {
             Console.WriteLine($"{Brand} {Model} завёл двигатель!");
         }
@@ -47,7 +47,7 @@ namespace TransportManagementSystem
         {
             return $"{Brand} {Model} ({Year} год)";
         }
-
+        //Проверка на достижимость скорости
         public void CanReachSpeed(double speed)
         {
             if (speed <= MaxSpeed)
@@ -56,7 +56,8 @@ namespace TransportManagementSystem
             }
             else { Console.WriteLine($"{Brand} {Model} не может достичь скорости {MaxSpeed}."); };
             }
-    }
+        }
 
+        
 
 }
