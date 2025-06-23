@@ -8,24 +8,47 @@ internal class Program
 
     static void Main(string[] args)
     {
-
-        // Создаём словарь, где ключ — госномер, а значение — объект Car
-        var carDictionary = new Dictionary<string, Car>
+        var engine1 = new Engine
         {
-            { "A123BC", new Car("Toyota", "Corolla") { Doors = 4 } },
-            { "B456DE", new Car("BMW", "M3") { Doors = 2 } },
-            { "C789FG", new Car("Mazda", "rx-7") { Doors = 2 } }
+            Brand = "Toyota",
+            Model = "2JZ-GTE",
+            HorsePower = 110
+        };
+        var engine2 = new Engine
+        {
+            Brand = "Nissan",
+            Model = "1NZ-FE",
+            HorsePower = 280
         };
 
-        // Получаем машину по ключу (госномеру)
-        var car = carDictionary["B456DE"];
-        Console.WriteLine($"Brand: {car.Brand}, Model: {car.Model}"); // BMW M3
-
-        // Можно пройтись по всем парам ключ-значение
-        foreach (var pair in carDictionary)
+        Engine[] enginesArray = new Engine[3];
+        enginesArray[0] = engine1;
+        enginesArray[1] = engine2;
+        foreach (var engine in enginesArray)
         {
-            Console.WriteLine($"Number: {pair.Key}, Brand: {pair.Value.Brand}, Model: {pair.Value.Model}");
+            if (engine != null) { Console.WriteLine($"Model: {engine.Model}, HP: {engine.HorsePower}"); }
         }
+
+        var enginesList = new List<Engine>(enginesArray);
+        var engine3 = new Engine
+        {
+            Brand = "Mersedes",
+            Model = "B16B",
+            HorsePower = 185
+        };
+        var engine4 = new Engine
+        {
+            Brand = "Nissan",
+            Model = "RB26DETT",
+            HorsePower = 280
+        };
+        Console.WriteLine();
+        enginesList.Add(engine3);
+        enginesList.Add(engine4);
+        enginesList.RemoveAll(item => item is null || item.HorsePower < 150);
+        foreach (var engine in enginesList)
+        { Console.WriteLine($"Model: {engine.Model}, HP: {engine.HorsePower}"); }
+
     }
 
 
