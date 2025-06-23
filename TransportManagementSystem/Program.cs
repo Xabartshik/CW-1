@@ -30,6 +30,16 @@ internal class Program
 
         tesla.Start();
         Console.WriteLine(tesla.GetInfo());
+
+        myCar.Move();
+        var dog = new Dog
+        {
+            Breed = "Jack-Russel",
+            Name = "Lessie"
+        };
+
+        dog.Move();
+
     }
 
 
