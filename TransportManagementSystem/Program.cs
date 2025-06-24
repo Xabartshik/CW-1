@@ -8,25 +8,19 @@ internal class Program
 
     static void Main(string[] args)
     {
-        var cars = new Car[]
-        {
-            new Car("Toyota", "Corolla"),
-            new Car("BMW", "M3")
-        };
+        var garage = new Garage();
+        string plate = "A123BC";
+        if (CarUtils.IsValidLicensePlate(plate))
+            Console.WriteLine($"Номер {plate} корректен");
+        else
+            Console.WriteLine($"Номер {plate} некорректен");
 
-        try
-        {
-            var car = cars[1];
-            Console.WriteLine(car.Brand);
-        }
-        catch (IndexOutOfRangeException)
-        {
-            Console.WriteLine("Ошибка: Индекс вне диапазона массива автомобилей!");
-        }
-        finally
-        {
-            Console.WriteLine("Отработал блок finally");
-        }
+        // Пример с некорректным номером
+        string wrongPlate = "123";
+        if (CarUtils.IsValidLicensePlate(wrongPlate))
+            Console.WriteLine($"Номер {wrongPlate} корректен");
+        else
+            Console.WriteLine($"Номер {wrongPlate} некорректен");
     }
 
 }

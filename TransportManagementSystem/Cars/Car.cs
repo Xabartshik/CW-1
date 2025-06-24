@@ -9,8 +9,10 @@ namespace TransportManagementSystem.Cars
 {
     public class Car : Vehicle, IMovable, IRepairable
     {
+        public static int TotalCarsCreated = 0; // Статическое поле
         public Car(string brand, string model) : base(brand, model)
         {
+            TotalCarsCreated++; // Увеличиваем счетчик при каждом создании машины
         }
         public Engine? Engine { get; set; }
         public DateTime? LastServiceDate { get; set; }
