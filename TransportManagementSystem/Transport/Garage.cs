@@ -28,8 +28,10 @@ namespace TransportManagementSystem.Transport
         }
         public bool NeedsService(Car car)
         {
-            var lastService = car.LastServiceDate ?? DateTime.Now.AddYears(-1);
-            return DateTime.Now.Subtract(lastService).TotalDays > 365;
+            if (car.LastServiceDate is null || !car.LastServiceDate.HasValue)
+                return false;
+
+            return DateTime.Now.Subtract(car.LastServiceDate.Value).TotalDays > 365;
         }
         // возвращает список всех машин, у которых двигатель не ремонтировался более двух лет (или дата ремонта не указана).
         public List<Car> NeedsRepair()
@@ -38,7 +40,14 @@ namespace TransportManagementSystem.Transport
             DateTime lastRepairDate;
             foreach (var car in _cars.Values)
             {
-                lastRepairDate = car.engine?.LastRepairDate ?? DateTime.Now.AddYears(-2);
+                if (car.engine is null)
+                    continue;
+
+                if (!car.engine.LastRepairDate.HasValue)
+                    continue;
+
+                lastRepairDate = car.engine.LastRepairDate!.Value;
+
                 if (DateTime.Now.Subtract(lastRepairDate).TotalDays < 365 * 2)
                     continue;
                 repairList.Add(car);
