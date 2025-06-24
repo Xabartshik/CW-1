@@ -6,12 +6,11 @@ namespace EShop.Presentation.Controllers
     [Route("[controller]")]
     public class ProductController : ControllerBase
     {
-        // Статический массив продуктов
-        private static readonly Product[] Products = new[]
+        private static readonly List<Product> Products = new List<Product>
         {
-            new Product { Id = 1, Name = "Laptop", Price = 70000 },
-            new Product { Id = 2, Name = "Smartphone", Price = 35000 },
-            new Product { Id = 3, Name = "Headphones", Price = 5000 }
+          new Product { Id = 1, Name = "Laptop", Price = 70000 },
+          new Product { Id = 2, Name = "Smartphone", Price = 35000 },
+          new Product { Id = 3, Name = "Headphones", Price = 5000 }
         };
 
         // Метод для получения продукта по id
@@ -25,10 +24,17 @@ namespace EShop.Presentation.Controllers
         }
 
         // Метод для получения всех продуктов по id
-        [HttpGet()]
+        [HttpGet]
         public IEnumerable<Product> Get()
         {
             return Products.ToList();
+        }
+
+        [HttpPost]
+        public ActionResult<Product> Add([FromBody] Product product)
+        {
+            Products.Add(product);
+            return CreatedAtAction(nameof(Get), new { id = product.Id }, product);
         }
     }
 }
