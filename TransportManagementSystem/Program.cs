@@ -8,31 +8,24 @@ internal class Program
 
     static void Main(string[] args)
     {
-        var garage = new Garage();
-
-        garage.AddCar("A123BC", new Car("Toyota", "Corolla")
+        var cars = new Car[]
         {
-            Engine = new Engine { Model = "1NZ-FE", HorsePower = 110 },
-            LastServiceDate = DateTime.Now.AddMonths(-8)
-        });
+            new Car("Toyota", "Corolla"),
+            new Car("BMW", "M3")
+        };
 
-        garage.AddCar("B456DE", new Car("BMW", "M3")
+        try
         {
-            Engine = new Engine { Model = "S55", HorsePower = 425 }
-        });
-
-        // Поиск существующей машины
-        var foundCar = garage.FindCar("A123BC");
-        garage.PrintCarInfo(foundCar, "A123BC");
-
-        // Поиск несуществующей машины
-        var notFoundCar = garage.FindCar("Z999ZZ");
-        garage.PrintCarInfo(notFoundCar, "Z999ZZ");
-
-        // Проверка необходимости ТО
-        if (foundCar != null)
+            var car = cars[1];
+            Console.WriteLine(car.Brand);
+        }
+        catch (IndexOutOfRangeException)
         {
-            Console.WriteLine($"Needs service: {garage.NeedsService(foundCar)}");
+            Console.WriteLine("Ошибка: Индекс вне диапазона массива автомобилей!");
+        }
+        finally
+        {
+            Console.WriteLine("Отработал блок finally");
         }
     }
 
