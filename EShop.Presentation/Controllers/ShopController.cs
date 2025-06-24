@@ -28,33 +28,5 @@ namespace EShop.Presentation.Controllers
             return CreatedAtAction(nameof(GetAll), null, shop);
         }
 
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            var shop = Shops.FirstOrDefault(p => p.Id == id);
-            if (shop == null)
-                return NotFound();
-
-            Shops.Remove(shop);
-            return NoContent(); // 204
-        }
-
-        [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody] Shop updatedShop)
-        {
-            var shop = Shops.FirstOrDefault(p => p.Id == id);
-            if (shop == null)
-                return NotFound();
-
-            // Валидация входных данных
-            if (string.IsNullOrWhiteSpace(updatedShop.Name) || updatedShop.Area <= 0)
-                return BadRequest("Некорректные данные");
-
-            // Полное обновление
-            shop.Name = updatedShop.Name;
-            shop.Area = updatedShop.Area;
-            return NoContent();
-        }
-
     }
 }

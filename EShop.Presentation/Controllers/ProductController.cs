@@ -36,33 +36,5 @@ namespace EShop.Presentation.Controllers
             Products.Add(product);
             return CreatedAtAction(nameof(Get), new { id = product.Id }, product);
         }
-
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            var product = Products.FirstOrDefault(p => p.Id == id);
-            if (product == null)
-                return NotFound();
-
-            Products.Remove(product);
-            return NoContent(); // 204
-        }
-
-        [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody] Product updatedProduct)
-        {
-            var product = Products.FirstOrDefault(p => p.Id == id);
-            if (product == null)
-                return NotFound();
-
-            // Валидация входных данных
-            if (string.IsNullOrWhiteSpace(updatedProduct.Name) || updatedProduct.Price <= 0)
-                return BadRequest("Некорректные данные");
-
-            // Полное обновление
-            product.Name = updatedProduct.Name;
-            product.Price = updatedProduct.Price;
-            return NoContent();
-        }
     }
 }
