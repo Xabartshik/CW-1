@@ -49,7 +49,7 @@ internal class Program
             engine = new Engine { Model = "TSI 1.4", HorsePower = 150, LastRepairDate = DateTime.Now.AddMonths(-18) },
             LastServiceDate = DateTime.Now.AddMonths(-5)
         });
-
+        //Домашняя работа реализована в этих функциях
         List<Car> carsRepairNeeded = garage.NeedsRepair();
         foreach (Car car in carsRepairNeeded)
         {
