@@ -21,6 +21,15 @@ internal class Program
             Console.WriteLine($"Номер {wrongPlate} корректен");
         else
             Console.WriteLine($"Номер {wrongPlate} некорректен");
+        Car car = new Car("UAZ", "469")
+        {
+            LastServiceDate = DateTime.Now.AddMonths(-20)
+        };
+        if (GarageUtils.IsCarNeedService(car))
+            Console.WriteLine($"{car.Brand} {car.Model} требует обслуживания");
+        else
+            Console.WriteLine($"{car.Brand} {car.Model} не требует обслуживания");
+
     }
 
 }
