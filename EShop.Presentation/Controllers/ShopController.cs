@@ -25,6 +25,7 @@ namespace EShop.Presentation.Controllers
         public ActionResult<Shop> Add([FromBody] Shop shop)
         {
             Shops.Add(shop);
+            //Возвращает информацию о произведенном действии (все элементы списка магазинов, путь???, добавленный магазин)
             return CreatedAtAction(nameof(GetAll), null, shop);
         }
 
