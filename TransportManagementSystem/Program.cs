@@ -36,6 +36,9 @@ internal class Program
             Console.WriteLine("Машина не найдена");
         }
         Console.WriteLine($"Среднее значение л.с. двигателей у машин: {StatisticsUtils.GetAverageHorsePower(cars)}");
+        var longModels = cars.FindAll(car => car.Model.Count() > 5);
+        foreach (var longModel in longModels)
+            Console.WriteLine($"Машина с длинной моделью: {longModel.Brand} {longModel.Model} ({longModel.Model.Count()} символов)");
     }
 
 }
