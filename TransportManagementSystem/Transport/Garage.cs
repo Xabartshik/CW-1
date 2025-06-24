@@ -31,7 +31,7 @@ namespace TransportManagementSystem.Transport
             var lastService = car.LastServiceDate ?? DateTime.MinValue;
             return DateTime.Now.Subtract(lastService).TotalDays > 365;
         }
-
+        // возвращает список всех машин, у которых двигатель не ремонтировался более двух лет (или дата ремонта не указана).
         public List<Car> NeedsRepair()
         {
             var repairList = new List<Car>();
@@ -46,7 +46,7 @@ namespace TransportManagementSystem.Transport
             }
             return repairList;
         }
-
+        //Возвращает словарь, где ключ — это марка машины, а значение — список моделей этой марки, присутствующих в гараже.
         public Dictionary<string, List<string>> sortBrand()
         { 
             Dictionary<string, List<string>> result = new Dictionary<string, List<string>>();
