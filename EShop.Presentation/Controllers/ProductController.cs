@@ -24,7 +24,7 @@ namespace EShop.Presentation.Controllers
             return product;
         }
 
-        // Метод для получения продуктов по id
+        // Метод для получения всех продуктов по id
         [HttpGet()]
         public IEnumerable<Product> Get()
         {
