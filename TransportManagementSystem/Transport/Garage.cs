@@ -28,33 +28,32 @@ namespace TransportManagementSystem.Transport
         }
         public bool NeedsService(Car car)
         {
-            var lastService = car.LastServiceDate ?? DateTime.MinValue;
+            var lastService = car.LastServiceDate ?? DateTime.Now.AddYears(-1);
             return DateTime.Now.Subtract(lastService).TotalDays > 365;
         }
         // возвращает список всех машин, у которых двигатель не ремонтировался более двух лет (или дата ремонта не указана).
         public List<Car> NeedsRepair()
         {
             var repairList = new List<Car>();
-            var lastRepairDate = new DateTime();
+            DateTime lastRepairDate;
             foreach (var car in _cars.Values)
             {
-                lastRepairDate = car.engine?.LastRepairDate ?? DateTime.MinValue;
-                if (DateTime.Now.Subtract(lastRepairDate).TotalDays > 365 * 2)
-                {
-                    repairList.Add(car);
-                }
+                lastRepairDate = car.engine?.LastRepairDate ?? DateTime.Now.AddYears(-2);
+                if (DateTime.Now.Subtract(lastRepairDate).TotalDays < 365 * 2)
+                    continue;
+                repairList.Add(car);
             }
             return repairList;
         }
-        //Возвращает словарь, где ключ — это марка машины, а значение — список моделей этой марки, присутствующих в гараже
+        //Возвращает словарь, где ключ — это марка машины, а значение — список моделей этой марки, присутствующих в гараже.
         public Dictionary<string, List<string>> sortBrand()
-        { 
+        {
             Dictionary<string, List<string>> result = new Dictionary<string, List<string>>();
             foreach (var car in _cars)
             {
                 if (result.ContainsKey(car.Value.Brand) == false)
                 {
-                        result[car.Value.Brand] = new List<string>();
+                    result[car.Value.Brand] = new List<string>();
                 }
                 result[car.Value.Brand].Add(car.Value.Model);
 
