@@ -8,19 +8,22 @@ internal class Program
 
     static void Main(string[] args)
     {
-        var garage = new Garage();
-        string plate = "A123BC";
-        if (CarUtils.IsValidLicensePlate(plate))
-            Console.WriteLine($"Номер {plate} корректен");
-        else
-            Console.WriteLine($"Номер {plate} некорректен");
+        var cars = new List<Car>
+        {
+            new Car("Toyota", "Corolla"),
+            new Car("BMW", "M3"),
+            new Car("Lada", "Vesta")
+        };
 
-        // Пример с некорректным номером
-        string wrongPlate = "123";
-        if (CarUtils.IsValidLicensePlate(wrongPlate))
-            Console.WriteLine($"Номер {wrongPlate} корректен");
-        else
-            Console.WriteLine($"Номер {wrongPlate} некорректен");
+        // Найти первую машину марки BMW
+        var bmw = cars.Find(car => car.Brand == "BMW");
+        if (bmw != null)
+            Console.WriteLine($"Найдена: {bmw.Brand} {bmw.Model}");
+
+        // Получить все машины, у которых марка начинается на 'T'
+        var tCars = cars.FindAll(car => car.Brand.StartsWith("T"));
+        foreach (var car in tCars)
+            Console.WriteLine($"Марка на T: {car.Brand} {car.Model}");
     }
 
 }
