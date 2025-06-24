@@ -24,6 +24,8 @@ namespace EShop.Presentation.Controllers
         [HttpPost]
         public ActionResult<Shop> Add([FromBody] Shop shop)
         {
+            if (!Shop.Validate(shop))
+                return BadRequest("Некорректные данные");
             Shops.Add(shop);
             return CreatedAtAction(nameof(GetAll), null, shop);
         }
@@ -47,7 +49,7 @@ namespace EShop.Presentation.Controllers
                 return NotFound();
 
             // Валидация входных данных
-            if (string.IsNullOrWhiteSpace(updatedShop.Name) || updatedShop.Area <= 0)
+            if (!Shop.Validate(updatedShop))
                 return BadRequest("Некорректные данные");
 
             // Полное обновление

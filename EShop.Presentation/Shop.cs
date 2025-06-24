@@ -7,7 +7,16 @@ namespace EShop.Presentation
         public int Id { get; set; }
         public required string Name { get; set; }
 
-        [Range(1, 100000)]
+
         public double Area { get; set; }
+
+        public static bool Validate(Shop shop)
+        {
+            if (string.IsNullOrWhiteSpace(shop.Name) || shop.Area <= 0)
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }
