@@ -23,7 +23,7 @@ namespace EShop.Presentation.Controllers
             return product;
         }
 
-        // Метод для получения всех продуктов по id
+        // Метод для получения всех продуктов по id. Почему здесь нельзя использовать ActionResult? Как вернуть Products?
         [HttpGet]
         public IEnumerable<Product> Get()
         {
