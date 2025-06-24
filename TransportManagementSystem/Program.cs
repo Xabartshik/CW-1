@@ -12,18 +12,18 @@ internal class Program
         {
             new Car("Toyota", "Corolla"),
             new Car("BMW", "M3"),
-            new Car("Lada", "Vesta")
+            new Car("Lada", "Vesta"),
+            new Car("Audi", "A6"),
+            new Car("Mazda", "CX-5")
         };
 
-        // Найти первую машину марки BMW
-        var bmw = cars.Find(car => car.Brand == "BMW");
-        if (bmw != null)
-            Console.WriteLine($"Найдена: {bmw.Brand} {bmw.Model}");
+        var aCars = cars.FindAll(car => car.Brand.ToLower().Contains("a"));
+        foreach (var car in aCars)
+            Console.WriteLine($"Марка содержит 'a': {car.Brand} {car.Model}");
 
-        // Получить все машины, у которых марка начинается на 'T'
-        var tCars = cars.FindAll(car => car.Brand.StartsWith("T"));
-        foreach (var car in tCars)
-            Console.WriteLine($"Марка на T: {car.Brand} {car.Model}");
+        var longModel = cars.Find(car => car.Model.Length > 4);
+        if (longModel != null)
+            Console.WriteLine($"Модель длиннее 4 символов: {longModel.Brand} {longModel.Model}");
     }
 
 }
