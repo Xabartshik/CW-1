@@ -10,9 +10,11 @@ internal class Program
     {
         var cars = new List<Car>
         {
-            new Car("Toyota", "Corolla"),
-            new Car("BMW", "M3"),
-            new Car("Lada", "Vesta")
+            new Car("Toyota", "Corolla"){Engine = new Engine{ HorsePower = 100} },
+            new Car("BMW", "M3"){Engine = new Engine{ HorsePower = 400} },
+            new Car("Lada", "Vesta"){Engine = new Engine{ HorsePower = 200} }, 
+            new Car("Москвич", "410"),
+            new Car("Минск", "МТЗ-82"){Engine = new Engine{ HorsePower = 15} },
         };
 
         // Найти первую машину марки BMW
@@ -33,6 +35,7 @@ internal class Program
         else {
             Console.WriteLine("Машина не найдена");
         }
+        Console.WriteLine($"Среднее значение л.с. двигателей у машин: {StatisticsUtils.GetAverageHorsePower(cars)}");
     }
 
 }
