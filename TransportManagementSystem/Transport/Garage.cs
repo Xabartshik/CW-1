@@ -28,6 +28,7 @@ namespace TransportManagementSystem.Transport
         }
         public bool NeedsService(Car car)
         {
+
             if (car.LastServiceDate is null || !car.LastServiceDate.HasValue)
                 return false;
 
@@ -40,6 +41,7 @@ namespace TransportManagementSystem.Transport
             DateTime lastRepairDate;
             foreach (var car in _cars.Values)
             {
+
                 if (car.engine is null)
                     continue;
 
@@ -47,7 +49,6 @@ namespace TransportManagementSystem.Transport
                     continue;
 
                 lastRepairDate = car.engine.LastRepairDate!.Value;
-
                 if (DateTime.Now.Subtract(lastRepairDate).TotalDays < 365 * 2)
                     continue;
                 repairList.Add(car);
