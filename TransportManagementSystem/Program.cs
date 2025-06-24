@@ -12,9 +12,14 @@ internal class Program
         {
             new Car("Toyota", "Corolla"){Engine = new Engine{ HorsePower = 100} },
             new Car("BMW", "M3"){Engine = new Engine{ HorsePower = 400} },
-            new Car("Lada", "Vesta"){Engine = new Engine{ HorsePower = 200} }, 
-            new Car("Москвич", "410"),
-            new Car("Минск", "МТЗ-82"){Engine = new Engine{ HorsePower = 15} },
+            new Car("Lada", "Vesta"){Engine = new Engine{ HorsePower = 200} },
+            new Car("Toyota", "Corolla"){Engine = new Engine{ HorsePower = 100} },
+            new Car("BMW", "M3"){Engine = new Engine{ HorsePower = 400} },
+            new Car("Lada", "Vesta"){Engine = new Engine{ HorsePower = 200} },
+            new Car("Moskvich", "410"),
+            new Car("Minsk", "MTZ-82"){Engine = new Engine{ HorsePower = 15} },
+            new Car("Mazda", "567FG"){Engine = new Engine{ HorsePower = 250} },
+            new Car("MahaYa", "MK-108"){Engine = new Engine{ HorsePower = 105} },
         };
 
         // Найти первую машину марки BMW
@@ -39,6 +44,33 @@ internal class Program
         var longModels = cars.FindAll(car => car.Model.Count() > 5);
         foreach (var longModel in longModels)
             Console.WriteLine($"Машина с длинной моделью: {longModel.Brand} {longModel.Model} ({longModel.Model.Count()} символов)");
+
+        var brandM = cars.FindAll(car => car.Brand[0].ToString().ToLower() == "m");
+        Console.WriteLine($"Машина с маркой на M");
+        foreach (var car in brandM)
+            Console.WriteLine($"*   {car.Brand} {car.Model}");
+        var sorted = brandM.OrderBy(car => car.Model);
+        Console.WriteLine($"Сортировано по модели");
+        foreach (var car in sorted)
+            Console.WriteLine($"*   {car.Brand} {car.Model}");
+        var unique = cars.DistinctBy(car => car.Model);
+        Console.WriteLine($"Уникальные по модели");
+        foreach (var car in unique)
+            Console.WriteLine($"*   {car.Brand} {car.Model}");
+        if (cars.Find(cars => cars.Engine !=null && cars.Engine.HorsePower > 200 ) != null)
+            Console.WriteLine($"Машина с двигателем мощнее 200 л.с. есть");
+        else
+        { Console.WriteLine($"Машина с двигателем мощнее 200 л.с. нет"); }
+        var firstCarD = cars.FirstOrDefault(car => car.Brand.ToLower().Contains("d"));
+        if (firstCarD != null)
+        {
+            Console.WriteLine($"Машина с буквой D в марке: {firstCarD.Brand}, {firstCarD.Model}");
+        }
+        else
+        {
+            Console.WriteLine($"Машина с буквой D в марке отсутствует");
+        }
+
     }
 
 }
