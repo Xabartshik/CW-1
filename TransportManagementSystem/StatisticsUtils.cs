@@ -11,7 +11,6 @@ namespace TransportManagementSystem
     {
         public static double GetAverageHorsePower(List<Car> cars)
         {
-            double mid = 0;
             return cars.Where(car => car.Engine != null).Average(car => car.Engine.HorsePower);
         }
     }
