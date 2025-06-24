@@ -29,10 +29,18 @@ internal class Program
         }
 
         Garage garage = new Garage();
-        Car car = new Car("BMW", "M3")
+        garage.AddCar("A123BC", new Car("Toyota", "Corolla"));
+        try
         {
-            
+            var car = garage.FindCar("Z999ZZ");
+            string brand = car?.Brand ?? "Unknown";
+            Console.WriteLine(brand);
         }
+        catch (NullReferenceException)
+        {
+            Console.WriteLine("Ошибка: Машина с таким номером не найдена!");
+        }
+        finally { Console.WriteLine("Завершение поиска автомобиля"); }
     }
 
 }
