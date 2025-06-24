@@ -46,7 +46,7 @@ namespace TransportManagementSystem.Transport
             }
             return repairList;
         }
-        //Возвращает словарь, где ключ — это марка машины, а значение — список моделей этой марки, присутствующих в гараже.
+        //Возвращает словарь, где ключ — это марка машины, а значение — список моделей этой марки, присутствующих в гараже
         public Dictionary<string, List<string>> sortBrand()
         { 
             Dictionary<string, List<string>> result = new Dictionary<string, List<string>>();
