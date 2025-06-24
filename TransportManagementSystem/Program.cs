@@ -27,6 +27,12 @@ internal class Program
         {
             Console.WriteLine("Отработал блок finally");
         }
+
+        Garage garage = new Garage();
+        Car car = new Car("BMW", "M3")
+        {
+            
+        }
     }
 
 }
