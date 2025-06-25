@@ -1,8 +1,9 @@
 ﻿using EShop.Domain;
+using EShop.Domain.Interfaces;
 
 namespace EShop.DAL.Repositories
 {
-    public class ShopRepository
+    public class ShopRepository : IShopRepository
     {
         private static readonly List<Shop> _shops = new List<Shop>
         {

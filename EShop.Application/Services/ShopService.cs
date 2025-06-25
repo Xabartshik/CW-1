@@ -1,6 +1,7 @@
 ﻿using EShop.Application.DTOs;
 using EShop.DAL.Repositories;
 using EShop.Domain;
+using EShop.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,12 @@ namespace EShop.Application.Services
 {
     public class ShopService
     {
-        private static readonly ShopRepository _repo = new ShopRepository();
+        private readonly IShopRepository _repo;
 
+        public ShopService(IShopRepository repository)
+        {
+            _repo = repository;
+        }
 
         public static bool Validate(Shop shop)
         {

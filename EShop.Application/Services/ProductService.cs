@@ -1,12 +1,18 @@
 ﻿using EShop.Application.DTOs;
 using EShop.DAL.Repositories;
 using EShop.Domain;
+using EShop.Domain.Interfaces;
 
 namespace EShop.Application.Services
 {
     public class ProductService
     {
-        private readonly ProductRepository _repository = new ProductRepository();
+        private readonly IProductRepository _repository;
+
+        public ProductService(IProductRepository repository)
+        {
+            _repository = repository;
+        }
 
         private ProductDto ToDto(Product product)
             => new ProductDto(product.Id, product.Name, product.Price);

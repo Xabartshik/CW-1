@@ -8,7 +8,13 @@ namespace EShop.Domain.Controllers
     [Route("[controller]")]
     public class ProductController : ControllerBase
     {
-        private readonly ProductService _service = new ProductService();
+        private readonly ProductService _service;
+
+        // Конструктор принимает сервис через DI
+        public ProductController(ProductService service)
+        {
+            _service = service;
+        }
 
         // Метод для получения продукта по id
         [HttpGet("{id}")]

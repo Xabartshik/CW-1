@@ -8,7 +8,11 @@ namespace EShop.Domain.Controllers
     [Route("[controller]")]
     public class ShopController : Controller
     {
-        private readonly ShopService _service = new ShopService();
+        private readonly ShopService _service;
+
+        public ShopController(ShopService service) { 
+            _service = service;
+        }
 
         [HttpGet]
         public IEnumerable<ShopDto> GetAll()
