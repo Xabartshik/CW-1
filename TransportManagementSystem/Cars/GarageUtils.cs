@@ -11,7 +11,11 @@ namespace TransportManagementSystem.Cars
         // Статический метод для проверки корректности номера
         public static bool IsCarNeedService(Car car)
         {
-            var lastService = car.LastServiceDate ?? DateTime.MinValue;
+            if (car.LastServiceDate is null || !car.LastServiceDate.HasValue)
+            {
+                return false;
+            }
+            var lastService = car.LastServiceDate.Value;
             return DateTime.Now.Subtract(lastService).TotalDays > 365;
         }
     }
