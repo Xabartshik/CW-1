@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TransportManagementSystem.Cars
+namespace TransportManagementSystem.Transport
 {
     public class SportCar : Car
     {

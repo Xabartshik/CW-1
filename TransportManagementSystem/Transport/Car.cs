@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TransportManagementSystem.Contracts;
 
-namespace TransportManagementSystem.Cars
+namespace TransportManagementSystem.Transport
 {
     public class Car : Vehicle, IMovable, IRepairable
     {
@@ -14,7 +14,7 @@ namespace TransportManagementSystem.Cars
         {
             TotalCarsCreated++; // Увеличиваем счетчик при каждом создании машины
         }
-        public Engine? Engine { get; set; }
+        public Engine? engine { get; set; }
         public DateTime? LastServiceDate { get; set; }
         public int Doors { get; set; }
 
