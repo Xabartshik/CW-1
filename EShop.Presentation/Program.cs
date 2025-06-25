@@ -1,4 +1,9 @@
 
+using EShop.Application.Services;
+using EShop.DAL.Repositories;
+using EShop.Domain.Interfaces;
+using EShop.Presentation.Controllers;
+
 namespace EShop.Domain
 {
     public class Program
@@ -13,6 +18,12 @@ namespace EShop.Domain
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddScoped<IProductRepository, ProductRepository>();
+            builder.Services.AddScoped<ProductService>();
+            builder.Services.AddScoped<IShopRepository, ShopRepository>();
+            builder.Services.AddScoped<ShopService>();
+            builder.Services.AddSingleton<ICounterService, CounterService>();
 
             var app = builder.Build();
 
