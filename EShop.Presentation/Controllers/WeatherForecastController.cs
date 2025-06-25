@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace EShop.Presentation.Controllers
+namespace EShop.Domain.Controllers
 {
     [ApiController]
     [Route("[controller]")]

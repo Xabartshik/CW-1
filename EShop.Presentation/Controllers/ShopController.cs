@@ -1,60 +1,52 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EShop.Application.DTOs;
+using EShop.Application.Services;
+using Microsoft.AspNetCore.Mvc;
 
-namespace EShop.Presentation.Controllers
+namespace EShop.Domain.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     public class ShopController : Controller
     {
-        private static readonly List<Shop> Shops = new List<Shop>()
-        { 
-          new Shop { Name = "Однёрочка", Area = 100, Id = 1 },
-          new Shop { Name = "Дварочка", Area = 200, Id = 2 },
-          new Shop { Name = "Тернарочка", Area = 300, Id = 3 },
-          new Shop { Name = "Квадрёрочка", Area = 400, Id = 4 },
-          new Shop { Name = "Пентарочка", Area = 500, Id = 5 },
-        };
+        private readonly ShopService _service = new ShopService();
 
         [HttpGet]
-        public IEnumerable<Shop> GetAll()
+        public IEnumerable<ShopDto> GetAll()
         {
-            return Shops;
+            return _service.GetAll();
+        }
+        [HttpGet("{id}")]
+        public ActionResult<ShopDto?> Get(int id)
+        {
+            ShopDto? result = _service.GetById(id);
+            return result;
         }
 
         [HttpPost]
-        public ActionResult<Shop> Add([FromBody] Shop shop)
+        public ActionResult<ShopDto> Add([FromBody] ShopDto shopDto)
         {
-            if (!Shop.Validate(shop))
+            if (!ShopService.ValidateDto(shopDto))
                 return BadRequest("Некорректные данные");
-            Shops.Add(shop);
-            return CreatedAtAction(nameof(GetAll), null, shop);
+            _service.Add(shopDto);
+            return CreatedAtAction(nameof(GetAll), new { id = shopDto.Id }, shopDto);
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var shop = Shops.FirstOrDefault(p => p.Id == id);
-            if (shop == null)
-                return NotFound();
-
-            Shops.Remove(shop);
-            return NoContent(); // 204
+            if (_service.Remove(id))
+                return NoContent(); // 204
+            return BadRequest("Некорректные данные");
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody] Shop updatedShop)
+        public IActionResult Update(int id, [FromBody] ShopDto updatedShopDto)
         {
-            var shop = Shops.FirstOrDefault(p => p.Id == id);
-            if (shop == null)
-                return NotFound();
-
-            // Валидация входных данных
-            if (!Shop.Validate(updatedShop))
+            if (!ShopService.ValidateDto(updatedShopDto))
                 return BadRequest("Некорректные данные");
-
-            // Полное обновление
-            shop.Name = updatedShop.Name;
-            shop.Area = updatedShop.Area;
+            var result = _service.Update(id, updatedShopDto);
+            if (!result)
+                return NotFound();
             return NoContent();
         }
 
