@@ -14,7 +14,7 @@ namespace TransportManagementSystem
             try
             {
                 //Так как было написано, что метод должен бросать исключение, метод его и бросает
-                if (index > cars.Count()) 
+                if (index > cars.Count() || index < 0) 
                     throw new ArgumentOutOfRangeException("index");
                 var car = cars[index];
                 return car;
