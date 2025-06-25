@@ -41,9 +41,9 @@ internal class Program
             Console.WriteLine("Машина не найдена");
         }
         Console.WriteLine($"Среднее значение л.с. двигателей у машин: {StatisticsUtils.GetAverageHorsePower(cars)}");
-        var longModels = cars.FindAll(car => car.Model.Count() > 5);
+        var longModels = cars.FindAll(car => car.Model.Length > 5);
         foreach (var longModel in longModels)
-            Console.WriteLine($"Машина с длинной моделью: {longModel.Brand} {longModel.Model} ({longModel.Model.Count()} символов)");
+            Console.WriteLine($"Машина с длинной моделью: {longModel.Brand} {longModel.Model} ({longModel.Model.Length} символов)");
 
         var brandM = cars.FindAll(car => car.Brand[0].ToString().ToLower() == "m");
         Console.WriteLine($"Машина с маркой на M");
