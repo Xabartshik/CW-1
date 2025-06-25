@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using TransportManagementSystem.Transport;
+using TransportManagementSystem;
 
 public class ElectricCar : Vehicle
 {

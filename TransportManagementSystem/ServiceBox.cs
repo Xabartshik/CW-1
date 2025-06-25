@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TransportManagementSystem.Contracts;
 
-namespace TransportManagementSystem.Transport
+namespace TransportManagementSystem
 {
     public class ServiceBox<T> where T : IRepairable
     {
