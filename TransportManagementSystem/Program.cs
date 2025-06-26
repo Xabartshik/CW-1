@@ -7,59 +7,69 @@ internal class Program
 
     static void Main(string[] args)
     {
-        var garage = new Garage();
+        var cars = new List<Car>
+        {
+            new Car("Toyota", "Corolla"){Engine = new Engine{ HorsePower = 100} },
+            new Car("BMW", "M3"){Engine = new Engine{ HorsePower = 400} },
+            new Car("Lada", "Vesta"){Engine = new Engine{ HorsePower = 200} },
+            new Car("Toyota", "Corolla"){Engine = new Engine{ HorsePower = 100} },
+            new Car("BMW", "M3"){Engine = new Engine{ HorsePower = 400} },
+            new Car("Lada", "Vesta"){Engine = new Engine{ HorsePower = 200} },
+            new Car("Moskvich", "410"),
+            new Car("Minsk", "MTZ-82"){Engine = new Engine{ HorsePower = 15} },
+            new Car("Mazda", "567FG"){Engine = new Engine{ HorsePower = 250} },
+            new Car("MahaYa", "MK-108"){Engine = new Engine{ HorsePower = 105} },
+        };
 
-        garage.AddCar("A123BC", new Car("Toyota", "Corolla")
-        {
-            engine = new Engine { Model = "1NZ-FE", HorsePower = 110, LastRepairDate = DateTime.Now.AddMonths(-32) },
-            LastServiceDate = DateTime.Now.AddMonths(-8)
-        });
+        // Найти первую машину марки BMW
+        var bmw = cars.Find(car => car.Brand == "BMW");
+        if (bmw != null)
+            Console.WriteLine($"Найдена: {bmw.Brand} {bmw.Model}");
 
-        garage.AddCar("B456DE", new Car("Toyota", "M3")
+        // Получить все машины, у которых марка начинается на 'T'
+        var tCars = cars.FindAll(car => car.Brand.StartsWith("T"));
+        foreach (var car in tCars)
+            Console.WriteLine($"Марка на T: {car.Brand} {car.Model}");
+        var carService = new CarService();
+        var carByIndex = carService.GetCarByIndex(cars, 5);
+        if (carByIndex != null)
         {
-            engine = new Engine { Model = "S55", HorsePower = 425, LastRepairDate = DateTime.Now.AddMonths(-24) }
-        });
-
-        garage.AddCar("C789FG", new Car("Toyota", "Civic")
-        {
-            engine = new Engine { Model = "K20A", HorsePower = 200, LastRepairDate = DateTime.Now.AddMonths(-30) }, 
-            LastServiceDate = DateTime.Now.AddMonths(-6)
-        });
-
-        garage.AddCar("D012HI", new Car("Ford", "Focus")
-        {
-            engine = new Engine { Model = "EcoBoost 1.0", HorsePower = 125, LastRepairDate = DateTime.Now.AddMonths(-10) }, 
-            LastServiceDate = DateTime.Now.AddMonths(-3)
-        });
-
-        garage.AddCar("E345JK", new Car("Ford", "C-Class")
-        {
-            engine = new Engine { Model = "M274", HorsePower = 184 }, 
-            LastServiceDate = DateTime.Now.AddMonths(-12)
-        });
-
-        garage.AddCar("F678LM", new Car("Ford", "A4")
-        {
-            engine = new Engine { Model = "EA888", HorsePower = 190, LastRepairDate = DateTime.Now.AddMonths(-40) }, 
-            LastServiceDate = DateTime.Now.AddMonths(-9)
-        });
-
-        garage.AddCar("G901NO", new Car("Volkswagen", "Golf")
-        {
-            engine = new Engine { Model = "TSI 1.4", HorsePower = 150, LastRepairDate = DateTime.Now.AddMonths(-18) },
-            LastServiceDate = DateTime.Now.AddMonths(-5)
-        });
-        //Домашняя работа реализована в этих функциях
-        List<Car> carsRepairNeeded = garage.NeedsRepair();
-        foreach (Car car in carsRepairNeeded)
-        {
-            Console.WriteLine($"Brand: {car.Brand}; Model: {car.Model}, Last repair: {car?.engine?.LastRepairDate?.ToString("dd.MM.yyyy") ?? "Never"}");
+            Console.WriteLine($"Машина найдена: {carByIndex.Brand} {carByIndex.Model}");
         }
-        Dictionary<string, List<string>> carsBrands = garage.sortBrand();
-        foreach (var car in carsBrands)
-        {
-            Console.WriteLine($"Brand: {car.Key}; Models: {String.Join(", ", car.Value.ToArray())}");
+        else {
+            Console.WriteLine("Машина не найдена");
         }
+        Console.WriteLine($"Среднее значение л.с. двигателей у машин: {StatisticsUtils.GetAverageHorsePower(cars)}");
+        var longModels = cars.FindAll(car => car.Model.Length > 5);
+        foreach (var longModel in longModels)
+            Console.WriteLine($"Машина с длинной моделью: {longModel.Brand} {longModel.Model} ({longModel.Model.Length} символов)");
+
+        var brandM = cars.FindAll(car => car.Brand[0].ToString().ToLower() == "m");
+        Console.WriteLine($"Машина с маркой на M");
+        foreach (var car in brandM)
+            Console.WriteLine($"*   {car.Brand} {car.Model}");
+        var sorted = brandM.OrderBy(car => car.Model);
+        Console.WriteLine($"Сортировано по модели");
+        foreach (var car in sorted)
+            Console.WriteLine($"*   {car.Brand} {car.Model}");
+        var unique = cars.DistinctBy(car => car.Model);
+        Console.WriteLine($"Уникальные по модели");
+        foreach (var car in unique)
+            Console.WriteLine($"*   {car.Brand} {car.Model}");
+        if (cars.Find(cars => cars.Engine !=null && cars.Engine.HorsePower > 200 ) != null)
+            Console.WriteLine($"Машина с двигателем мощнее 200 л.с. есть");
+        else
+        { Console.WriteLine($"Машина с двигателем мощнее 200 л.с. нет"); }
+        var firstCarD = cars.FirstOrDefault(car => car.Brand.ToLower().Contains("d"));
+        if (firstCarD != null)
+        {
+            Console.WriteLine($"Машина с буквой D в марке: {firstCarD.Brand}, {firstCarD.Model}");
+        }
+        else
+        {
+            Console.WriteLine($"Машина с буквой D в марке отсутствует");
+        }
+
     }
 
 }
