@@ -1,4 +1,5 @@
 
+using EShop.Application;
 using EShop.Application.Services;
 using EShop.DAL.Repositories;
 using EShop.Domain.Interfaces;
@@ -24,6 +25,7 @@ namespace EShop.Domain
             builder.Services.AddScoped<IShopRepository, ShopRepository>();
             builder.Services.AddScoped<ShopService>();
             builder.Services.AddSingleton<ICounterService, CounterService>();
+            builder.Services.AddSingleton<IRequestLogger, RequestLogger>();
 
             var app = builder.Build();
 

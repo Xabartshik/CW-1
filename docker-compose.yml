@@ -1,0 +1,6 @@
+version: '3.8'
+
+services:
+  # Пока пустой, будем заполнять по мере изучения
+  test:
+    image: hello-world

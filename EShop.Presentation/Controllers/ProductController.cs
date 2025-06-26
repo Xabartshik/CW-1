@@ -1,4 +1,5 @@
-﻿using EShop.Application.DTOs;
+﻿using EShop.Application;
+using EShop.Application.DTOs;
 using EShop.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,12 +10,27 @@ namespace EShop.Domain.Controllers
     public class ProductController : ControllerBase
     {
         private readonly ProductService _service;
+        private readonly IRequestLogger _logger;
 
-        // Конструктор принимает сервис через DI
-        public ProductController(ProductService service)
+        public ProductController(ProductService service, IRequestLogger logger)
         {
             _service = service;
+            _logger = logger;
         }
+
+        [HttpGet]
+        public IEnumerable<ProductDto> GetAll()
+        {
+            _logger.LogRequest("GetAll Products");
+            return _service.GetAll();
+        }
+
+        [HttpGet("logs")]
+        public ActionResult<List<string>> GetLogs()
+        {
+            return _logger.GetLogs();
+        }
+
 
         // Метод для получения продукта по id
         [HttpGet("{id}")]
@@ -23,12 +39,6 @@ namespace EShop.Domain.Controllers
             return _service.GetById(id);
         }
 
-        // Метод для получения всех продуктов
-        [HttpGet]
-        public IEnumerable<ProductDto> GetAll()
-        {
-            return _service.GetAll();
-        }
 
         // Метод для добавления нового продукта
         [HttpPost]
