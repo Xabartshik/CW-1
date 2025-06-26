@@ -22,7 +22,7 @@ namespace TransportManagementSystem.Transport
             Console.WriteLine($"License: {licensePlate}");
             Console.WriteLine($"Brand: {car?.Brand ?? "Unknown"}");
             Console.WriteLine($"Model: {car?.Model ?? "Unknown"}");
-            Console.WriteLine($"Engine HP: {car?.engine?.HorsePower ?? 0}");
+            Console.WriteLine($"Engine HP: {car?.Engine?.HorsePower ?? 0}");
             Console.WriteLine($"Last service: {car?.LastServiceDate?.ToString("dd.MM.yyyy") ?? "Never"}");
             Console.WriteLine();
         }
@@ -40,13 +40,13 @@ namespace TransportManagementSystem.Transport
             DateTime lastRepairDate;
             foreach (var car in _cars.Values)
             {
-                if (car.engine is null)
+                if (car.Engine is null)
                     continue;
 
-                if (!car.engine.LastRepairDate.HasValue)
+                if (!car.Engine.LastRepairDate.HasValue)
                     continue;
 
-                lastRepairDate = car.engine.LastRepairDate!.Value;
+                lastRepairDate = car.Engine.LastRepairDate!.Value;
 
                 if (DateTime.Now.Subtract(lastRepairDate).TotalDays < 365 * 2)
                     continue;
