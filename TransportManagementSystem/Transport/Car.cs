@@ -14,7 +14,7 @@ namespace TransportManagementSystem.Transport
         {
             TotalCarsCreated++; // Увеличиваем счетчик при каждом создании машины
         }
-        public Engine? engine { get; set; }
+        public Engine? Engine { get; set; }
         public DateTime? LastServiceDate { get; set; }
         public int Doors { get; set; }
 
