@@ -2,16 +2,21 @@
 using EShop.DAL.Repositories;
 using EShop.Domain;
 using EShop.Domain.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace EShop.Application.Services
 {
     public class ProductService
     {
+        private readonly ILogger<ProductService> _logger;
         private readonly IProductRepository _repository;
 
-        public ProductService(IProductRepository repository)
+        public ProductService(
+            IProductRepository productRepository,
+            ILogger<ProductService> logger)
         {
-            _repository = repository;
+            _repository = productRepository;
+            _logger = logger;
         }
 
         private ProductDto ToDto(Product product)
