@@ -15,40 +15,40 @@ namespace EShop.Domain.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<ShopDto> GetAll()
+        public async Task<IEnumerable<ShopDto>> GetAll()
         {
-            return _service.GetAll();
+            return await _service.GetAll();
         }
         [HttpGet("{id}")]
-        public ActionResult<ShopDto?> Get(int id)
+        public async Task<ActionResult<ShopDto?>> Get(int id)
         {
-            ShopDto? result = _service.GetById(id);
+            ShopDto? result = await _service.GetById(id);
             return result;
         }
 
         [HttpPost]
-        public ActionResult<ShopDto> Add([FromBody] ShopDto shopDto)
+        public async Task<ActionResult<ShopDto>> Add([FromBody] ShopDto shopDto)
         {
             if (!ShopService.ValidateDto(shopDto))
                 return BadRequest("Некорректные данные");
-            _service.Add(shopDto);
+            await _service.Add(shopDto);
             return CreatedAtAction(nameof(GetAll), new { id = shopDto.Id }, shopDto);
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (_service.Remove(id))
+            if (await _service.Remove(id))
                 return NoContent(); // 204
             return BadRequest("Некорректные данные");
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody] ShopDto updatedShopDto)
+        public async Task<IActionResult> Update(int id, [FromBody] ShopDto updatedShopDto)
         {
             if (!ShopService.ValidateDto(updatedShopDto))
                 return BadRequest("Некорректные данные");
-            var result = _service.Update(id, updatedShopDto);
+            var result = await _service.Update(id, updatedShopDto);
             if (!result)
                 return NotFound();
             return NoContent();

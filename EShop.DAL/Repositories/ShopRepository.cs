@@ -23,7 +23,7 @@ namespace EShop.DAL.Repositories
             await connection.OpenAsync();
 
             //Команда
-            using var command = new NpgsqlCommand("SELECT id, name, area, address, created_at, FROM shops WHERE id = @id", connection);
+            using var command = new NpgsqlCommand("SELECT id, name, area, address, createdat FROM shops WHERE id = @id", connection);
             command.Parameters.AddWithValue("@id", id);
 
             using var reader = await command.ExecuteReaderAsync();
@@ -36,7 +36,7 @@ namespace EShop.DAL.Repositories
                     Name = reader.GetString("name"),
                     Area = reader.GetDouble("area"),
                     Address = reader.GetString("address"),
-                    CreatedAt = reader.GetDateTime("created_at")
+                    CreatedAt = reader.GetDateTime("createdat")
                 };
             }
 
@@ -51,7 +51,7 @@ namespace EShop.DAL.Repositories
             await connection.OpenAsync();
 
             //Команда
-            using var command = new NpgsqlCommand("SELECT * FROM shops order by ID", connection);
+            using var command = new NpgsqlCommand("SELECT id, name, area, address, createdat FROM shops order by ID", connection);
             using var reader = await command.ExecuteReaderAsync();
             while (await reader.ReadAsync()) {
                 shops.Add( new Shop
@@ -60,7 +60,7 @@ namespace EShop.DAL.Repositories
                     Name = reader.GetString("name"),
                     Area = reader.GetDouble("area"),
                     Address = reader.GetString("address"),
-                    CreatedAt = reader.GetDateTime("created_at")
+                    CreatedAt = reader.GetDateTime("createdat")
                 });
             }
             return shops;
@@ -103,7 +103,7 @@ namespace EShop.DAL.Repositories
             await connection.OpenAsync();
 
             //Команда
-            using var command = new NpgsqlCommand("UPDATE shops Set (name = @name, area = @area, address = @address) WHERE id = @id",
+            using var command = new NpgsqlCommand("UPDATE shops Set name = @name, area = @area, address = @address WHERE id = @id",
                 connection);
             command.Parameters.AddWithValue("@id", shop.Id);
             command.Parameters.AddWithValue("@area", shop.Area);

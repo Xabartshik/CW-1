@@ -40,6 +40,7 @@ namespace EShop.DAL.Repositories
 
         public async Task<IEnumerable<Product>> GetAllAsync()
         {
+            int rowNumber = 0;
             var products = new List<Product>();
 
             using var connection = _connectionFactory.CreateConnection();
@@ -50,6 +51,15 @@ namespace EShop.DAL.Repositories
 
             while (await reader.ReadAsync())
             {
+                rowNumber++; // счетчик строк
+                Console.WriteLine($"Row #{rowNumber}:");
+                for (int i = 0; i < reader.FieldCount; i++)
+                {
+                    string columnName = reader.GetName(i);
+                    object value = reader.GetValue(i);
+                    Type dataType = reader.GetFieldType(i);
+                    Console.WriteLine($"  Column {i}: Name = {columnName}, Value = {value}, Type = {dataType.Name}");
+                }
                 products.Add(new Product
                 {
                     Id = reader.GetInt32("id"),

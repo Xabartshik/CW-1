@@ -1,77 +1,64 @@
-﻿using EShop.Application;
-using EShop.Application.DTOs;
+﻿using EShop.Application.DTOs;
 using EShop.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EShop.Domain.Controllers
+[ApiController]
+[Route("[controller]")]
+public class ProductController : ControllerBase
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class ProductController : ControllerBase
+    private readonly ProductService _service;
+
+    public ProductController(ProductService service)
     {
-        private readonly ProductService _service;
-        private readonly IRequestLogger _logger;
+        _service = service;
+    }
 
-        public ProductController(ProductService service, IRequestLogger logger)
-        {
-            _service = service;
-            _logger = logger;
-        }
+    // Метод для получения продукта по id
+    [HttpGet("{id}")]
+    public async Task<ActionResult<ProductDto?>> Get(int id)
+    {
+        return await _service.GetByIdAsync(id);
+    }
 
-        [HttpGet]
-        public IEnumerable<ProductDto> GetAll()
-        {
-            _logger.LogRequest("GetAll Products");
-            return _service.GetAll();
-        }
+    // Метод для получения всех продуктов
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts()
+    {
+        var products = await _service.GetAllAsync();
+        return Ok(products);
+    }
 
-        [HttpGet("logs")]
-        public ActionResult<List<string>> GetLogs()
-        {
-            return _logger.GetLogs();
-        }
+    // Метод для добавления нового продукта
+    [HttpPost]
+    public async Task<ActionResult<ProductDto>> Add([FromBody] ProductDto productDto)
+    {
+        await _service.AddAsync(productDto);
 
+        return CreatedAtAction(nameof(Get), new { id = productDto.Id }, productDto);
+    }
 
-        // Метод для получения продукта по id
-        [HttpGet("{id}")]
-        public ActionResult<ProductDto?> Get(int id)
-        {
-            return _service.GetById(id);
-        }
+    // Метод для удаления продукта
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var result = await _service.RemoveAsync(id);
+        if (result == false)
+            return NotFound();
 
+        return NoContent();
+    }
 
-        // Метод для добавления нового продукта
-        [HttpPost]
-        public ActionResult<ProductDto> Add([FromBody] ProductDto productDto)
-        {
-            _service.Add(productDto);
-            return CreatedAtAction(nameof(Get), new { id = productDto.Id }, productDto);
-        }
+    // Метод для обновления продукта
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(int id, [FromBody] ProductDto updatedProductDto)
+    {
+        if (string.IsNullOrWhiteSpace(updatedProductDto.Name) || updatedProductDto.Price <= 0)
+            return BadRequest("Некорректные данные");
 
-        // Метод для удаления продукта
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            var product = _service.Remove(id);
-            if (product == false)
-                return NotFound();
+        var updated = await _service.UpdateAsync(id, updatedProductDto);
+        if (updated == false)
+            return NotFound();
 
-            return NoContent(); // 204
-        }
-
-        // Метод для обновления продукта
-        [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody] ProductDto updatedProductDto)
-        {
-            // Валидация входных данных
-            if (string.IsNullOrWhiteSpace(updatedProductDto.Name) || updatedProductDto.Price <= 0)
-                return BadRequest("Некорректные данные");
-
-            var updated = _service.Update(id, updatedProductDto);
-            if (updated == false)
-                return NotFound();
-
-            return NoContent();
-        }
+        return NoContent();
     }
 }

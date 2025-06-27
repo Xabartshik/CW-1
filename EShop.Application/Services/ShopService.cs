@@ -40,6 +40,7 @@ namespace EShop.Application.Services
         private ShopDto ToDto(Shop shop) => new ShopDto(shop.Id, shop.Name, shop.Area, shop.Address, shop.CreatedAt);
         private Shop FromDto(ShopDto shop) => new Shop { Id = shop.Id, Name = shop.Name, Area = shop.Area,
             Address = shop.Address, CreatedAt = shop.CreatedAt };
+
         public async Task<IEnumerable<ShopDto>> GetAll()
         {
             var shops = await _repo.GetAllAsync();

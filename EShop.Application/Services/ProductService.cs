@@ -17,19 +17,19 @@ namespace EShop.Application.Services
         private ProductDto ToDto(Product product)
             => new ProductDto(product.Id, product.Name, product.Price);
 
-        public async Task<IEnumerable<ProductDto>> GetAll()
+        public async Task<IEnumerable<ProductDto>> GetAllAsync()
         {
             var products = await _repository.GetAllAsync();
             return products.Select(ToDto);
         }
 
-        public async Task<ProductDto?> GetById(int id)
+        public async Task<ProductDto?> GetByIdAsync(int id)
         {
             var product = await _repository.GetByIdAsync(id);
             return product == null ? null : ToDto(product);
         }
 
-        public async Task Add(ProductDto dto)
+        public async Task AddAsync(ProductDto dto)
         {
             var product = new Product
             {
