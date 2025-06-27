@@ -1,45 +1,116 @@
-﻿using EShop.Domain;
+﻿using EShop.DAL.Interfaces;
+using EShop.Domain;
 using EShop.Domain.Interfaces;
+using Npgsql;
+using System.Data;
 
 namespace EShop.DAL.Repositories
 {
     public class ShopRepository : IShopRepository
     {
-        private static readonly List<Shop> _shops = new List<Shop>
-        {
-          new Shop { Name = "Однёрочка", Area = 100, Id = 1 },
-          new Shop { Name = "Дварочка", Area = 200, Id = 2 },
-          new Shop { Name = "Тернарочка", Area = 300, Id = 3 },
-          new Shop { Name = "Квадрёрочка", Area = 400, Id = 4 },
-          new Shop { Name = "Пентарочка", Area = 500, Id = 5 },
-        };
-        public Shop? GetById(int id)
-        {
-            return _shops.FirstOrDefault(x => x.Id == id);
-        }
-        public IEnumerable<Shop> GetAll()
-        {
-            return _shops;
-        }
-        public void Add(Shop shop)
-        {
-            _shops.Add(shop);
-        }
-        public bool Remove(int id)
-        {
-            var shop = GetById(id);
-            if (shop is null)
-                return false;
-            return _shops.Remove(shop);
-        }
-        public bool Update(Shop shop)
-        {
-            var oldShop = GetById(shop.Id);
-            if (oldShop is null) return false;
-            oldShop.Name = shop.Name;
-            oldShop.Area = shop.Area;
-            return true;
+        private readonly IDbConnectionFactory _connectionFactory;
 
+        public ShopRepository(IDbConnectionFactory connectionFactory)
+        {
+            _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
+        }
+
+
+        public async Task<Shop?> GetByIdAsync(int id)
+        {
+            //Соединение
+            using var connection = _connectionFactory.CreateConnection();
+            await connection.OpenAsync();
+
+            //Команда
+            using var command = new NpgsqlCommand("SELECT id, name, area, address, created_at, FROM shops WHERE id = @id", connection);
+            command.Parameters.AddWithValue("@id", id);
+
+            using var reader = await command.ExecuteReaderAsync();
+
+            if (await reader.ReadAsync())
+            {
+                return new Shop
+                {
+                    Id = reader.GetInt32("id"),
+                    Name = reader.GetString("name"),
+                    Area = reader.GetDouble("area"),
+                    Address = reader.GetString("address"),
+                    CreatedAt = reader.GetDateTime("created_at")
+                };
+            }
+
+            return null;
+        }
+
+        public async Task<IEnumerable<Shop>> GetAllAsync()
+        {
+            var shops = new List<Shop>();
+            //Соединение
+            using var connection = _connectionFactory.CreateConnection();
+            await connection.OpenAsync();
+
+            //Команда
+            using var command = new NpgsqlCommand("SELECT * FROM shops order by ID", connection);
+            using var reader = await command.ExecuteReaderAsync();
+            while (await reader.ReadAsync()) {
+                shops.Add( new Shop
+                {
+                    Id = reader.GetInt32("id"),
+                    Name = reader.GetString("name"),
+                    Area = reader.GetDouble("area"),
+                    Address = reader.GetString("address"),
+                    CreatedAt = reader.GetDateTime("created_at")
+                });
+            }
+            return shops;
+        }
+
+        public async Task AddAsync(Shop shop)
+        {
+            if (shop == null) {
+                throw new ArgumentNullException(nameof(shop)); }
+            //Соединение
+            using var connection = _connectionFactory.CreateConnection();
+            await connection.OpenAsync();
+
+            //Команда
+            using var command = new NpgsqlCommand("Insert into shops (area, address, name) values (@area, @address, @name)", connection);
+            command.Parameters.AddWithValue("@area", shop.Area);
+            command.Parameters.AddWithValue("@address", shop.Address);
+            command.Parameters.AddWithValue("@name", shop.Name);
+
+            await command.ExecuteNonQueryAsync();
+        }
+
+        public async Task<bool> RemoveAsync(int id)
+        {
+            //Соединение
+            using var connection = _connectionFactory.CreateConnection();
+            await connection.OpenAsync();
+
+            //Команда
+            using var command = new NpgsqlCommand("Delete FROM shops WHERE id = @id", connection);
+            command.Parameters.AddWithValue("@id", id);
+            //Возвращает число затронутых строк
+            return await command.ExecuteNonQueryAsync() > 0;
+        }
+
+        public async Task<bool> UpdateAsync(Shop shop)
+        {
+            //Соединение
+            using var connection = _connectionFactory.CreateConnection();
+            await connection.OpenAsync();
+
+            //Команда
+            using var command = new NpgsqlCommand("UPDATE shops Set (name = @name, area = @area, address = @address) WHERE id = @id",
+                connection);
+            command.Parameters.AddWithValue("@id", shop.Id);
+            command.Parameters.AddWithValue("@area", shop.Area);
+            command.Parameters.AddWithValue("@name", shop.Name);
+            command.Parameters.AddWithValue("@address", shop.Address);
+
+            return await command.ExecuteNonQueryAsync() > 0;
         }
     }
 }

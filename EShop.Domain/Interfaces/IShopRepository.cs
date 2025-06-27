@@ -8,10 +8,10 @@ namespace EShop.Domain.Interfaces
 {
     public interface IShopRepository
     {
-        Shop? GetById(int id);
-        IEnumerable<Shop> GetAll();
-        void Add(Shop shop);
-        bool Remove(int id);
-        bool Update(Shop shop);
+        Task<Shop?> GetByIdAsync(int id);
+        Task<IEnumerable<Shop>> GetAllAsync();
+        Task AddAsync(Shop shop);
+        Task<bool> RemoveAsync(int id);
+        Task<bool> UpdateAsync(Shop shop);
     }
 }

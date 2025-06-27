@@ -1,6 +1,8 @@
 
 using EShop.Application;
 using EShop.Application.Services;
+using EShop.DAL.Infrastructure;
+using EShop.DAL.Interfaces;
 using EShop.DAL.Repositories;
 using EShop.Domain.Interfaces;
 using EShop.Presentation.Controllers;
@@ -26,6 +28,7 @@ namespace EShop.Domain
             builder.Services.AddScoped<ShopService>();
             builder.Services.AddSingleton<ICounterService, CounterService>();
             builder.Services.AddSingleton<IRequestLogger, RequestLogger>();
+            builder.Services.AddScoped<IDbConnectionFactory, DbConnectionFactory>();
 
             var app = builder.Build();
 

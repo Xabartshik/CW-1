@@ -37,29 +37,34 @@ namespace EShop.Application.Services
             return true;
         }
 
-        private ShopDto ToDto(Shop shop) => new ShopDto(shop.Id, shop.Name, shop.Area);
-        private Shop FromDto(ShopDto shop) => new Shop { Id = shop.Id, Name = shop.Name, Area = shop.Area };
-        public IEnumerable<ShopDto> GetAll() => _repo.GetAll().Select(ToDto);
-        public ShopDto? GetById(int id)
+        private ShopDto ToDto(Shop shop) => new ShopDto(shop.Id, shop.Name, shop.Area, shop.Address, shop.CreatedAt);
+        private Shop FromDto(ShopDto shop) => new Shop { Id = shop.Id, Name = shop.Name, Area = shop.Area,
+            Address = shop.Address, CreatedAt = shop.CreatedAt };
+        public async Task<IEnumerable<ShopDto>> GetAll()
         {
-            Shop? shop = _repo.GetById(id);
+            var shops = await _repo.GetAllAsync();
+            return shops.Select(ToDto);
+        }
+        public async Task<ShopDto?> GetById(int id)
+        {
+            Shop? shop = await _repo.GetByIdAsync(id);
             return shop == null ? null : ToDto(shop);
 
         }
-        public void Add(ShopDto dto)
+        public async Task Add(ShopDto dto)
         {
             Shop shop = FromDto(dto);
-            _repo.Add(shop);
+            await _repo.AddAsync(shop);
         }
-        public bool Remove(int id)
+        public async Task<bool> Remove(int id)
         {
-            return _repo.Remove(id);
+            return await _repo.RemoveAsync(id);
         }
 
-        public bool Update(int id, ShopDto dto)
+        public async Task<bool> Update(int id, ShopDto dto)
         {
             Shop newShop = FromDto(dto);
-            return _repo.Update(newShop);
+            return await _repo.UpdateAsync(newShop);
         }
     }
 }

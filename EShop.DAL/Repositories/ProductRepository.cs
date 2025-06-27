@@ -1,43 +1,114 @@
-﻿using EShop.Domain;
+﻿using EShop.DAL.Interfaces;
+using EShop.Domain;
 using EShop.Domain.Interfaces;
+using Npgsql;
+using System.Data;
 
 namespace EShop.DAL.Repositories
 {
     public class ProductRepository : IProductRepository
     {
-        private static readonly List<Product> _products = new List<Product>
+        private readonly IDbConnectionFactory _connectionFactory;
+
+        public ProductRepository(IDbConnectionFactory connectionFactory)
         {
-            new Product { Id = 1, Name = "Laptop", Price = 70000 },
-            new Product { Id = 2, Name = "Smartphone", Price = 35000 },
-            new Product { Id = 3, Name = "Headphones", Price = 5000 }
-        };
-
-        public Product? GetById(int id)
-            => _products.FirstOrDefault(p => p.Id == id);
-
-        public IEnumerable<Product> GetAll()
-            => _products;
-
-        public void Add(Product product)
-            => _products.Add(product);
-
-        public bool Remove(int id)
-        {
-            var product = GetById(id);
-            if (product != null)
-                return _products.Remove(product);
-            return false;
+            _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
         }
 
-        public bool Update(Product product)
+        public async Task<Product?> GetByIdAsync(int id)
         {
-            var existing = GetById(product.Id);
-            if (existing == null)
-                return false;
+            using var connection = _connectionFactory.CreateConnection();
+            await connection.OpenAsync();
 
-            existing.Name = product.Name;
-            existing.Price = product.Price;
-            return true;
+            using var command = new NpgsqlCommand("SELECT id, name, price FROM products WHERE id = @id", connection);
+            command.Parameters.AddWithValue("@id", id);
+
+            using var reader = await command.ExecuteReaderAsync();
+
+            if (await reader.ReadAsync())
+            {
+                return new Product
+                {
+                    Id = reader.GetInt32("id"),
+                    Name = reader.GetString("name"),
+                    Price = reader.GetDecimal("price")
+                };
+            }
+
+            return null;
+        }
+
+        public async Task<IEnumerable<Product>> GetAllAsync()
+        {
+            var products = new List<Product>();
+
+            using var connection = _connectionFactory.CreateConnection();
+            await connection.OpenAsync();
+
+            using var command = new NpgsqlCommand("SELECT id, name, price FROM products ORDER BY id", connection);
+            using var reader = await command.ExecuteReaderAsync();
+
+            while (await reader.ReadAsync())
+            {
+                products.Add(new Product
+                {
+                    Id = reader.GetInt32("id"),
+                    Name = reader.GetString("name"),
+                    Price = reader.GetDecimal("price")
+                });
+            }
+
+            return products;
+        }
+
+        public async Task AddAsync(Product product)
+        {
+            if (product == null)
+                throw new ArgumentNullException(nameof(product));
+
+            using var connection = _connectionFactory.CreateConnection();
+            await connection.OpenAsync();
+
+            using var command = new NpgsqlCommand(
+                "INSERT INTO products (name, price) VALUES (@name, @price)",
+                connection);
+
+            command.Parameters.AddWithValue("@name", product.Name);
+            command.Parameters.AddWithValue("@price", product.Price);
+
+            await command.ExecuteNonQueryAsync();
+        }
+
+        public async Task<bool> RemoveAsync(int id)
+        {
+            using var connection = _connectionFactory.CreateConnection();
+            await connection.OpenAsync();
+
+            using var command = new NpgsqlCommand("DELETE FROM products WHERE id = @id", connection);
+            command.Parameters.AddWithValue("@id", id);
+
+            var rowsAffected = await command.ExecuteNonQueryAsync();
+            return rowsAffected > 0;
+        }
+
+        public async Task<bool> UpdateAsync(Product product)
+        {
+            if (product == null)
+                throw new ArgumentNullException(nameof(product));
+
+            using var connection = _connectionFactory.CreateConnection();
+            await connection.OpenAsync();
+
+            using var command = new NpgsqlCommand(
+                "UPDATE products SET name = @name, price = @price WHERE id = @id",
+                connection);
+
+            command.Parameters.AddWithValue("@name", product.Name);
+            command.Parameters.AddWithValue("@price", product.Price);
+            command.Parameters.AddWithValue("@id", product.Id);
+
+            var rowsAffected = await command.ExecuteNonQueryAsync();
+            return rowsAffected > 0;
         }
     }
 }

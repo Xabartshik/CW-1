@@ -1,13 +1,11 @@
-﻿using EShop.Domain;
-
-namespace EShop.Domain.Interfaces
+﻿namespace EShop.Domain.Interfaces
 {
     public interface IProductRepository
     {
-        Product? GetById(int id);
-        IEnumerable<Product> GetAll();
-        void Add(Product product);
-        bool Remove(int id);
-        bool Update(Product product);
+        Task<Product?> GetByIdAsync(int id);
+        Task<IEnumerable<Product>> GetAllAsync();
+        Task AddAsync(Product product);
+        Task<bool> RemoveAsync(int id);
+        Task<bool> UpdateAsync(Product product);
     }
 }

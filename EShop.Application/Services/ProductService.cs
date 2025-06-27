@@ -17,16 +17,19 @@ namespace EShop.Application.Services
         private ProductDto ToDto(Product product)
             => new ProductDto(product.Id, product.Name, product.Price);
 
-        public IEnumerable<ProductDto> GetAll()
-            => _repository.GetAll().Select(ToDto);
-
-        public ProductDto? GetById(int id)
+        public async Task<IEnumerable<ProductDto>> GetAll()
         {
-            var product = _repository.GetById(id);
+            var products = await _repository.GetAllAsync();
+            return products.Select(ToDto);
+        }
+
+        public async Task<ProductDto?> GetById(int id)
+        {
+            var product = await _repository.GetByIdAsync(id);
             return product == null ? null : ToDto(product);
         }
 
-        public void Add(ProductDto dto)
+        public async Task Add(ProductDto dto)
         {
             var product = new Product
             {
@@ -34,12 +37,15 @@ namespace EShop.Application.Services
                 Name = dto.Name,
                 Price = dto.Price
             };
-            _repository.Add(product);
+            await _repository.AddAsync(product);
         }
 
-        public bool Remove(int id) => _repository.Remove(id);
+        public async Task<bool> RemoveAsync(int id)
+        {
+            return await _repository.RemoveAsync(id);
+        }
 
-        public bool Update(int id, ProductDto dto)
+        public async Task<bool> UpdateAsync(int id, ProductDto dto)
         {
             var product = new Product
             {
@@ -47,7 +53,8 @@ namespace EShop.Application.Services
                 Name = dto.Name,
                 Price = dto.Price
             };
-            return _repository.Update(product);
+
+            return await _repository.UpdateAsync(product);
         }
     }
 }
