@@ -9,10 +9,34 @@ namespace EShop.Domain.Controllers
     public class ShopController : Controller
     {
         private readonly ShopService _service;
+        private readonly IConfiguration _configuration;
+        private readonly ILogger<ShopController> _logger;
 
-        public ShopController(ShopService service) { 
+        public ShopController(ShopService service, IConfiguration configuration, ILogger<ShopController> logger) { 
             _service = service;
+            _configuration = configuration;
+            _logger = logger;
         }
+
+        [HttpGet("page")]
+        public async Task<ActionResult<List<Shop>>> GetProductsPaged(int page = 1)
+        {
+            _logger.LogInformation("Запрос страницы {Page} магазинов", page);
+
+            try
+            {
+                var products = await _service.GetProductsPageAsync(page);
+                return Ok(products);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Ошибка при получении страницы магазинов");
+
+                return StatusCode(500, "Внутренняя ошибка сервера");
+            }
+        }
+
+
 
         [HttpGet]
         public async Task<IEnumerable<ShopDto>> GetAll()

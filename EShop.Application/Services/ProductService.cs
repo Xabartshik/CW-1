@@ -1,7 +1,9 @@
 ﻿using EShop.Application.DTOs;
+using EShop.Application.Settings;
 using EShop.Domain;
 using EShop.Domain.Interfaces;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace EShop.Application.Services
 {
@@ -9,13 +11,16 @@ namespace EShop.Application.Services
     {
         private readonly IProductRepository _repository;
         private readonly ILogger<ProductService> _logger;
+        private readonly AppSettings _appSettings;
 
         public ProductService(
-            IProductRepository repository,
-            ILogger<ProductService> logger)
+            IProductRepository productRepository,
+            ILogger<ProductService> logger,
+            IOptions<AppSettings> appOptions)
         {
-            _repository = repository;
+            _repository = productRepository;
             _logger = logger;
+            _appSettings = appOptions.Value;
         }
 
         private ProductDto ToDto(Product product)
@@ -23,7 +28,17 @@ namespace EShop.Application.Services
 
         public async Task<IEnumerable<ProductDto>> GetAllAsync()
         {
+            if (_appSettings.EnableDetailedLogging)
+            {
+                _logger.LogTrace("Входим в метод GetProductsAsync");
+            }
+
             _logger.LogInformation("Запрос списка всех продуктов");
+
+            if (_appSettings.EnableDetailedLogging)
+            {
+                _logger.LogDebug("Вызываем репозиторий для получения продуктов");
+            }
 
             try
             {
@@ -39,9 +54,35 @@ namespace EShop.Application.Services
             }
         }
 
+        public async Task<IEnumerable<ProductDto>> GetProductsPageAsync(int page)
+        {
+            var pageLength = _appSettings.MaxProductsPerPage;
+            _logger.LogInformation("Запрос страницы {Page} продуктов (размер страницы: {pageLength})", page, pageLength);
+
+            try
+            {
+                var products = await _repository.GetAllAsync();
+                _logger.LogInformation("Получено {ProductCount} продуктов", products.ToList().Count);
+
+                var pagedProducts = products
+                .Skip((page - 1) * pageLength)
+                .Take(pageLength)
+                .ToList();
+
+                return pagedProducts.Select(ToDto);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Ошибка при получении постраничного списка продуктов");
+                throw;
+            }
+        }
+
         public async Task<ProductDto?> GetByIdAsync(int id)
         {
             _logger.LogInformation("Запрос продукта с ID: {ProductId}", id);
+            _logger.LogDebug("Вызов репозитория для получения продукта по ID");
+            _logger.LogTrace("Вход в GEtByIdsAsync");
 
             try
             {
@@ -65,6 +106,8 @@ namespace EShop.Application.Services
         {
             _logger.LogInformation("Создание нового продукта: {ProductName} с ценой {Price}",
                 dto.Name, dto.Price);
+            _logger.LogDebug("Добавление продукта в репозиторий");
+            _logger.LogTrace("Вход в AddAsync");
 
             var product = new Product
             {
@@ -88,7 +131,8 @@ namespace EShop.Application.Services
         public async Task<bool> RemoveAsync(int id)
         {
             _logger.LogInformation("Удаление продукта с ID: {ProductId}", id);
-
+            _logger.LogDebug("Вызов репозитория для удаления продукта по его Id");
+            _logger.LogTrace("Вход в RemoveAsync");
             try
             {
                 var result = await _repository.RemoveAsync(id);
@@ -112,7 +156,8 @@ namespace EShop.Application.Services
         public async Task<bool> UpdateAsync(int id, ProductDto dto)
         {
             _logger.LogInformation("Обновление продукта с ID: {ProductId}", dto.Id);
-
+            _logger.LogDebug("Вызов репозитория для обновления продукта");
+            _logger.LogTrace("Вход в UpdateAsync");
             var product = new Product
             {
                 Id = id,

@@ -1,16 +1,62 @@
 ﻿using EShop.Application.DTOs;
 using EShop.Application.Services;
+using EShop.Domain;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
-[Route("[controller]")]
-public class ProductController : ControllerBase
+[Route("api/[controller]")]
+public class ProductsController : ControllerBase
 {
     private readonly ProductService _service;
+    private readonly IConfiguration _configuration;
+    private readonly ILogger<ProductsController> _logger;
 
-    public ProductController(ProductService service)
+    public ProductsController(
+        ProductService productService,
+        IConfiguration configuration,
+        ILogger<ProductsController> logger)
     {
-        _service = service;
+        _service = productService;
+        _configuration = configuration;
+        _logger = logger;
+    }
+
+    [HttpGet("page")]
+    public async Task<ActionResult<List<Product>>> GetProductsPaged(int page = 1)
+    {
+        _logger.LogInformation("Запрос страницы {Page} продуктов", page);
+
+        try
+        {
+            var products = await _service.GetProductsPageAsync(page);
+            return Ok(products);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Ошибка при получении страницы продуктов");
+
+            return StatusCode(500, "Внутренняя ошибка сервера");
+        }
+    }
+
+    [HttpGet("info")]
+    public ActionResult<object> GetApplicationInfo()
+    {
+        var appName = _configuration["AppSettings:ApplicationName"];
+        var version = _configuration["AppSettings:Version"];
+        var maxProducts = _configuration.GetValue<int>("AppSettings:MaxProductsPerPage");
+        var enableDetailedLogging = _configuration.GetValue<bool>("AppSettings:EnableDetailedLogging");
+
+        _logger.LogInformation("Запрос информации о приложении");
+
+        return Ok(new
+        {
+            ApplicationName = appName,
+            Version = version,
+            MaxProductsPerPage = maxProducts,
+            EnableDetailedLogging = enableDetailedLogging,
+            Environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"
+        });
     }
 
     // Метод для получения продукта по id
